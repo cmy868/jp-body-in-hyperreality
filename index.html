@@ -11,17 +11,34 @@
   <body>
     <div class="container">
       <h1 id="title">DESCRIBE YOUR DEEPEST DESIRE OR FANTASY</h1>
-      <form id="myForm">
-        <textarea 
-          id="promptInput" 
-          name="prompt" 
-          placeholder="Input your deepest desire or fantasy in one sentence or less."
-        ></textarea>
-        <input type="button" onclick="sendPrompt()" value="Submit Prompt">
-        <div id="textField" style="display: none;">
-          ❗️The input is empty.
+      
+      <div class="prompt-sections">
+        <!-- Prepared Prompts Section -->
+        <div class="prepared-prompts-section">
+          <h2>Choose from prepared prompts:</h2>
+          <div class="prompts-container">
+            <div id="preparedPrompts" class="prompts-list">
+              <!-- Prepared prompts will be populated by JavaScript -->
+            </div>
+          </div>
         </div>
-      </form>
+
+        <!-- Custom Input Section -->
+        <div class="custom-input-section">
+          <h2>Or write your own:</h2>
+          <form id="myForm">
+            <textarea 
+              id="promptInput" 
+              name="prompt" 
+              placeholder="Input your deepest desire or fantasy in one sentence or less."
+            ></textarea>
+            <input type="button" onclick="sendPrompt()" value="Submit Prompt">
+            <div id="textField" style="display: none;">
+              ❗️The input is empty.
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </body>
 </html>
