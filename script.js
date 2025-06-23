@@ -4,14 +4,7 @@ let text = document.getElementById("textField");
 let title = document.getElementById("title");
 
 const questions = [
-  "What is your most transgressive desire?",
-  "Who do you want to be?",
-  "What are you afraid of?",
-  "What makes you feel whole?",
-  "What is consciousness?",
-  "What do you want to see?",
-  "What mask are you wearing?",
-  "How much are you worth?"
+  "Describe a vision of dance you'd like to create"
 ];
 
 let lastQuestionIndex = -1;
