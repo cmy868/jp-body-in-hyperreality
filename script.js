@@ -7,6 +7,10 @@ const questions = [
   "Describe a vision of dance you'd like to create"
 ];
 
+const placeholder = [
+  "Describe a vision of dance you'd like to create"
+];
+
 let lastQuestionIndex = -1;
 
 function getNewQuestion() {
