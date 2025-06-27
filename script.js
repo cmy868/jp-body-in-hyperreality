@@ -2,6 +2,7 @@ let ws = new WebSocket('wss://stp-interactive-sd-7305e236bdf9.herokuapp.com/:443
 let prompt = document.getElementById("promptInput");
 let text = document.getElementById("textField");
 let title = document.getElementById("title");
+let submitBtn = document.querySelector('input[type="button"]');
 
 const questions = [
   "Use one sentence to describe your dance fantasy"
@@ -38,11 +39,13 @@ function sendPrompt() {
   if (prompt.value === "") {
     text.style.display = "inline";
   } else {
+    if (submitBtn) submitBtn.disabled = true;
     console.log(prompt.value);
     text.style.display = "none";
     ws.send(prompt.value);
     prompt.value = "";
-    updateTexts(); // Update both texts with a new question
+    // Re-enable after a short delay (or after a response if you want)
+    setTimeout(() => { if (submitBtn) submitBtn.disabled = false; }, 500);
   }
 }
 
