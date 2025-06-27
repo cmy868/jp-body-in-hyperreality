@@ -4,35 +4,33 @@ let text = document.getElementById("textField");
 let title = document.getElementById("title");
 let submitBtn = document.querySelector('input[type="button"]');
 
-const questions = [
-  "Use one sentence to describe your dance fantasy"
-];
+// Show a styled popup message
+function showSuccessPopup(message) {
+  let popup = document.createElement('div');
+  popup.textContent = message;
+  popup.style.position = 'fixed';
+  popup.style.top = '50%';
+  popup.style.left = '50%';
+  popup.style.transform = 'translate(-50%, -50%)';
+  popup.style.background = 'linear-gradient(135deg, #000066 0%, #330033 50%, #330020 100%)';
+  popup.style.border = '2px solid #ff69b4';
+  popup.style.borderRadius = '16px';
+  popup.style.padding = '28px 48px';
+  popup.style.fontSize = '1.2em';
+  popup.style.fontFamily = '"HK Grotesk", system-ui, -apple-system, sans-serif';
+  popup.style.color = '#ff69b4';
+  popup.style.boxShadow = '0 0 24px #ff69b4, 0 0 48px #ff69b4';
+  popup.style.zIndex = '9999';
+  popup.style.textAlign = 'center';
+  popup.style.letterSpacing = '2px';
+  popup.style.textTransform = 'uppercase';
+  popup.style.textShadow = '0 0 8px #ff69b4, 0 0 16px #ff69b4';
+  document.body.appendChild(popup);
 
-const place_holder = [
-  "Ted Shawn and his man dancers cavorting in the fields."
-];
-
-let lastQuestionIndex = -1;
-
-function getNewQuestion() {
-  // Exclude the last used question by filtering
-  let newIndex;
-  do {
-    newIndex = Math.floor(Math.random() * questions.length);
-  } while (newIndex === lastQuestionIndex);
-  lastQuestionIndex = newIndex;
-  return questions[newIndex];
-}
-
-function updateTexts() {
-  const question = getNewQuestion();
-  // Update both the prompt placeholder and title
-  if (prompt) {
-    prompt.placeholder = place_holder;
-  }
-  if (title) {
-    title.textContent = question;
-  }
+  setTimeout(() => {
+    popup.remove();
+    if (submitBtn) submitBtn.disabled = false;
+  }, 1500);
 }
 
 function sendPrompt() {
@@ -44,12 +42,11 @@ function sendPrompt() {
     text.style.display = "none";
     ws.send(prompt.value);
     prompt.value = "";
-    // Re-enable after a short delay (or after a response if you want)
-    setTimeout(() => { if (submitBtn) submitBtn.disabled = false; }, 500);
+    showSuccessPopup("Submit successfully!");
   }
 }
 
-ws.addEventListener('open', (event) => {
+ws.addEventListener('open', () => {
   console.log('Socket connection open');
   ws.send('pong');
 });
@@ -70,13 +67,13 @@ ws.addEventListener('error', (error) => {
   alert('Please REFRESH the page to join back :)', error);
 });
 
-ws.addEventListener('close', (event) => {
+ws.addEventListener('close', () => {
   console.log('Socket connection closed');
   alert('If your prompt is not appearing, REFRESH to join back :)');
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  updateTexts(); // Set the initial texts
+  // No need to update title or placeholder anymore
 });
 
 //Original
