@@ -7,8 +7,8 @@ const questions = [
   "Use one sentence to describe your dance fantasy"
 ];
 
-const placeholder = [
-  "Describe a vision of dance you'd like to create"
+const place_holder = [
+  "Ted Shawn and his man dancers cavorting in the fields."
 ];
 
 let lastQuestionIndex = -1;
@@ -27,7 +27,7 @@ function updateTexts() {
   const question = getNewQuestion();
   // Update both the prompt placeholder and title
   if (prompt) {
-    prompt.placeholder = question;
+    prompt.placeholder = place_holder;
   }
   if (title) {
     title.textContent = question;
