@@ -4,7 +4,7 @@ let text = document.getElementById("textField");
 let title = document.getElementById("title");
 
 const questions = [
-  "Describe a vision of dance you'd like to create"
+  "Use one sentence to describe your dance fantasy"
 ];
 
 const placeholder = [
