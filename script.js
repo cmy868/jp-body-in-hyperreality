@@ -4,33 +4,39 @@ let text = document.getElementById("textField");
 let title = document.getElementById("title");
 let submitBtn = document.querySelector('input[type="button"]');
 
-// Show a styled popup message
+// Show a styled popup message using CSS class
 function showSuccessPopup(message) {
   let popup = document.createElement('div');
+  popup.className = 'success-popup';
   popup.textContent = message;
-  popup.style.position = 'fixed';
-  popup.style.top = '50%';
-  popup.style.left = '50%';
-  popup.style.transform = 'translate(-50%, -50%)';
-  popup.style.background = 'linear-gradient(135deg, #000066 0%, #330033 50%, #330020 100%)';
-  popup.style.border = '2px solid #ff69b4';
-  popup.style.borderRadius = '16px';
-  popup.style.padding = '28px 48px';
-  popup.style.fontSize = '1.2em';
-  popup.style.fontFamily = '"HK Grotesk", system-ui, -apple-system, sans-serif';
-  popup.style.color = '#ff69b4';
-  popup.style.boxShadow = '0 0 24px #ff69b4, 0 0 48px #ff69b4';
-  popup.style.zIndex = '9999';
-  popup.style.textAlign = 'center';
-  popup.style.letterSpacing = '2px';
-  popup.style.textTransform = 'uppercase';
-  popup.style.textShadow = '0 0 8px #ff69b4, 0 0 16px #ff69b4';
   document.body.appendChild(popup);
 
   setTimeout(() => {
     popup.remove();
     if (submitBtn) submitBtn.disabled = false;
   }, 1500);
+}
+
+// Show a modal with a refresh button
+function showRefreshModal(message) {
+  // Remove existing modal if present
+  let existing = document.getElementById('refresh-modal');
+  if (existing) existing.remove();
+
+  let modal = document.createElement('div');
+  modal.id = 'refresh-modal';
+
+  let content = document.createElement('div');
+  content.id = 'refresh-modal-content';
+  content.innerHTML = `<div>${message}</div>`;
+
+  let btn = document.createElement('button');
+  btn.textContent = 'Refresh Page';
+  btn.onclick = () => window.location.reload();
+
+  content.appendChild(btn);
+  modal.appendChild(content);
+  document.body.appendChild(modal);
 }
 
 function sendPrompt() {
@@ -64,16 +70,16 @@ ws.addEventListener('message', (message) => {
 
 ws.addEventListener('error', (error) => {
   console.error('error disconnect', error);
-  alert('Please REFRESH the page to join back :)', error);
+  showRefreshModal('Please refresh the page to join back :)');
 });
 
 ws.addEventListener('close', () => {
   console.log('Socket connection closed');
-  alert('If your prompt is not appearing, REFRESH to join back :)');
+  showRefreshModal('If your prompt is not appearing, refresh to join back :)');
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  // No need to update title or placeholder anymore
+  // No need to update title or placeholder
 });
 
 //Original
