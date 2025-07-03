@@ -181,3 +181,14 @@ input[type="button"]::before {
   box-shadow: 0 0 20px #ff69b4;
   transform: scale(1.05);
 }
+/* Add to style.css */
+.prompt-info {
+  font-size: 0.95em;
+  color: #ffb6d5;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  text-align: left;
+  font-family: "HK Grotesk", system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 5px #ff69b4;
+}
