@@ -48,7 +48,7 @@ function sendPrompt() {
     text.style.display = "none";
     ws.send(prompt.value);
     prompt.value = "";
-    showSuccessPopup("Submit successfully!");
+    showSuccessPopup("Submit successfully! Your prompt added to the queue :) Each prompt last 20 seconds, so please wait for your turn.");
   }
 }
 
