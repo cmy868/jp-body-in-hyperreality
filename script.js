@@ -111,42 +111,57 @@ ws.addEventListener('open', () => {
   ws.send('pong');
 });
 
-ws.addEventListener('message', (message) => {
-  if (message && message.data) {
-    if (message.data === "ping") {
-      console.log("got ping");
-      ws.send("pong");
-      return;
+function parseSwitch1Payload(raw) {
+  try {
+    if (raw == null) return null;
+    // Already an object with switch1
+    if (typeof raw === 'object' && Object.prototype.hasOwnProperty.call(raw, 'switch1')) {
+      return Number(raw.switch1);
     }
-    // Expect TD to send JSON like {"switch1": val}
-    try {
-      const data = typeof message.data === 'string' ? JSON.parse(message.data) : message.data;
-      if (data && Object.prototype.hasOwnProperty.call(data, 'switch1')) {
-        applySwitchState(data.switch1);
-      } else {
-        console.log('message (non-switch)', message.data);
-      }
-    } catch (e) {
-      // Fallback parsing: handle single-quoted JSON or bare numbers
+    if (typeof raw === 'string') {
+      const s = raw.trim();
+      // Bare numbers like "1" or "1.0"
+      if (/^(0|1)(\.0)?$/.test(s)) return Number(s);
+      // Try JSON.parse directly
       try {
-        if (typeof message.data === 'string') {
-          const s = message.data.trim();
-          if (s === '0' || s === '1' || s === '0.0' || s === '1.0') {
-            applySwitchState(Number(s));
-            return;
-          }
-          const normalized = s.replace(/^'|'$/g, '').replace(/'/g, '"');
-          const data2 = JSON.parse(normalized);
-          if (data2 && Object.prototype.hasOwnProperty.call(data2, 'switch1')) {
-            applySwitchState(data2.switch1);
-            return;
-          }
-        }
-        console.log('message (unparsed)', message.data);
-      } catch (e2) {
-        console.log('message (non-JSON)', message.data);
-      }
+        const obj = JSON.parse(s);
+        if (obj && Object.prototype.hasOwnProperty.call(obj, 'switch1')) return Number(obj.switch1);
+      } catch {}
+      // Normalize single quotes and parse again
+      const normalized = s.replace(/^'|'$/g, '').replace(/'/g, '"');
+      try {
+        const obj2 = JSON.parse(normalized);
+        if (obj2 && Object.prototype.hasOwnProperty.call(obj2, 'switch1')) return Number(obj2.switch1);
+      } catch {}
+      // Regex extract
+      const m = normalized.match(/"?switch1"?\s*:\s*([0-9]+(?:\.[0-9]+)?)/i);
+      if (m) return Number(m[1]);
     }
+  } catch {}
+  return null;
+}
+
+function handleWSMessageData(data) {
+  if (data === 'ping') {
+    console.log('got ping');
+    ws.send('pong');
+    return;
+  }
+  const val = parseSwitch1Payload(data);
+  if (val === 0 || val === 1 || val === 0.0 || val === 1.0) {
+    applySwitchState(Number(val));
+  } else {
+    console.log('message (unparsed)', data);
+  }
+}
+
+ws.addEventListener('message', (message) => {
+  if (!message) return;
+  const d = message.data;
+  if (d instanceof Blob) {
+    d.text().then(handleWSMessageData).catch((e) => console.log('blob parse error', e));
+  } else {
+    handleWSMessageData(d);
   }
 });
 
