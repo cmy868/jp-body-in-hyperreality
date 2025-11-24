@@ -4,6 +4,47 @@ let text = document.getElementById("textField");
 let title = document.getElementById("title");
 let submitBtn = document.querySelector('input[type="button"]');
 
+// Question sets controlled by TouchDesigner `switch1`
+const questionsSwitch0 = [
+  "What is your fear?",
+  "What are you afraid of?",
+  "What do you hope?",
+  "What do you dream?",
+];
+
+const questionsSwitch1 = [
+  "What is your most transgressive desire?",
+  "Who do you want to be?",
+  "What are you afraid of?",
+  "What makes you feel whole?",
+  "What is consciousness?",
+  "What do you want to see?",
+  "What mask are you wearing?",
+  "How much are you worth?",
+];
+
+let currentIndex = 0;
+let currentSet = questionsSwitch0;
+
+function setTitleAndPlaceholder(textVal) {
+  if (title) title.textContent = textVal;
+  if (prompt) prompt.placeholder = textVal;
+}
+
+function showNextQuestion() {
+  currentIndex = (currentIndex + 1) % currentSet.length;
+  setTitleAndPlaceholder(currentSet[currentIndex]);
+}
+
+function applySwitchState(val) {
+  // Normalize val to number 0/1
+  const n = typeof val === 'string' ? Number(val) : val;
+  currentSet = (n === 1) ? questionsSwitch1 : questionsSwitch0;
+  // Reset to first question when switch changes
+  currentIndex = 0;
+  setTitleAndPlaceholder(currentSet[currentIndex]);
+}
+
 // Show a styled popup message using CSS class
 function showSuccessPopup(message) {
   let popup = document.createElement('div');
@@ -49,6 +90,8 @@ function sendPrompt() {
     ws.send(prompt.value);
     prompt.value = "";
     showSuccessPopup("Submit successfully! Your prompt added to the queue :)");
+    // Change to next question after submit
+    showNextQuestion();
   }
 }
 
@@ -64,7 +107,17 @@ ws.addEventListener('message', (message) => {
       ws.send("pong");
       return;
     }
-    console.log("message", message);
+    // Expect TD to send JSON like {"switch1": val}
+    try {
+      const data = typeof message.data === 'string' ? JSON.parse(message.data) : message.data;
+      if (data && Object.prototype.hasOwnProperty.call(data, 'switch1')) {
+        applySwitchState(data.switch1);
+      } else {
+        console.log('message (non-switch)', message.data);
+      }
+    } catch (e) {
+      console.log('message (non-JSON)', message.data);
+    }
   }
 });
 
@@ -79,7 +132,8 @@ ws.addEventListener('close', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  // No need to update title or placeholder
+  // Initialize with switch==0 behavior until TD sends a value
+  applySwitchState(0);
 });
 
 //Original
