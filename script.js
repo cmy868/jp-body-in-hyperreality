@@ -27,8 +27,11 @@ let currentIndex = 0;
 let currentSet = questionsSwitch0;
 
 function setTitleAndPlaceholder(textVal) {
-  if (title) title.textContent = textVal;
-  if (prompt) prompt.placeholder = textVal;
+  console.log('Setting question to:', textVal);
+  const titleEl = document.getElementById("title");
+  const promptEl = document.getElementById("promptInput");
+  if (titleEl) titleEl.textContent = textVal;
+  if (promptEl) promptEl.placeholder = textVal;
 }
 
 function showNextQuestion() {
@@ -39,6 +42,7 @@ function showNextQuestion() {
 function applySwitchState(val) {
   // Normalize val to number 0/1
   const n = typeof val === 'string' ? Number(val) : val;
+  console.log('Switch state changed to:', n);
   currentSet = (n === 1) ? questionsSwitch1 : questionsSwitch0;
   // Reset to first question when switch changes
   currentIndex = 0;
