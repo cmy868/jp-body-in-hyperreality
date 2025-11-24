@@ -25,6 +25,7 @@ const questionsSwitch1 = [
 
 let currentIndex = 0;
 let currentSet = questionsSwitch0;
+let currentStage = null; // 1 or 2 when known
 
 function setTitleAndPlaceholder(textVal) {
   console.log('Setting question to:', textVal);
@@ -42,11 +43,17 @@ function showNextQuestion() {
 function applySwitchState(val) {
   // Normalize val to number 0/1
   const n = typeof val === 'string' ? Number(val) : val;
-  console.log('Switch state changed to:', n);
-  currentSet = (n === 1) ? questionsSwitch1 : questionsSwitch0;
-  // Reset to first question when switch changes
-  currentIndex = 0;
-  setTitleAndPlaceholder(currentSet[currentIndex]);
+  const nextStage = (n === 1) ? 2 : 1;
+  if (currentStage !== nextStage) {
+    currentStage = nextStage;
+    console.log(`Stage ${currentStage} - switched (switch1=${n})`);
+    currentSet = (currentStage === 2) ? questionsSwitch1 : questionsSwitch0;
+    // Reset to first question when stage changes
+    currentIndex = 0;
+    setTitleAndPlaceholder(currentSet[currentIndex]);
+  } else {
+    console.log(`Stage ${currentStage} - repeat (switch1=${n})`);
+  }
 }
 
 // Show a styled popup message using CSS class
@@ -120,7 +127,25 @@ ws.addEventListener('message', (message) => {
         console.log('message (non-switch)', message.data);
       }
     } catch (e) {
-      console.log('message (non-JSON)', message.data);
+      // Fallback parsing: handle single-quoted JSON or bare numbers
+      try {
+        if (typeof message.data === 'string') {
+          const s = message.data.trim();
+          if (s === '0' || s === '1' || s === '0.0' || s === '1.0') {
+            applySwitchState(Number(s));
+            return;
+          }
+          const normalized = s.replace(/^'|'$/g, '').replace(/'/g, '"');
+          const data2 = JSON.parse(normalized);
+          if (data2 && Object.prototype.hasOwnProperty.call(data2, 'switch1')) {
+            applySwitchState(data2.switch1);
+            return;
+          }
+        }
+        console.log('message (unparsed)', message.data);
+      } catch (e2) {
+        console.log('message (non-JSON)', message.data);
+      }
     }
   }
 });
