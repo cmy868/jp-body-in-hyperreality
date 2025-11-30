@@ -6,21 +6,21 @@ let submitBtn = document.querySelector('input[type="button"]');
 
 // Question sets controlled by TouchDesigner `switch1`
 const questionsSwitch0 = [
-  {question: "What is your fear?", example: "Being forgotten"},
-  {question: "What are you afraid of?", example: "Losing control"},
-  {question: "What do you hope?", example: "To find connection"},
-  {question: "What do you dream?", example: "A world without boundaries"},
+  {question: "What is your fear?", example: "e.g. Being forgotten by those I love, becoming invisible in a world that moves too fast"},
+  {question: "What are you afraid of?", example: "e.g. Losing control of my body, watching myself disappear piece by piece"},
+  {question: "What do you hope?", example: "e.g. To find true connection beyond screens, to touch something real and eternal"},
+  {question: "What do you dream?", example: "e.g. A world without boundaries where bodies dissolve into light and we all become one"},
 ];
 
 const questionsSwitch1 = [
-  {question: "What is your most transgressive desire?", example: "To dissolve into pure data"},
-  {question: "Who do you want to be?", example: "Someone unrecognizable"},
-  {question: "What are you afraid of?", example: "The silence after the noise"},
-  {question: "What makes you feel whole?", example: "Movement without thought"},
-  {question: "What is consciousness?", example: "A glitch in the system"},
-  {question: "What do you want to see?", example: "Bodies becoming light"},
-  {question: "What mask are you wearing?", example: "The one I can't remove"},
-  {question: "How much are you worth?", example: "More than I believe"},
+  {question: "What is your most transgressive desire?", example: "e.g. To dissolve into pure data, to become something inhuman and free from flesh"},
+  {question: "Who do you want to be?", example: "e.g. Someone unrecognizable, a version of myself that exists only in motion and light"},
+  {question: "What are you afraid of?", example: "e.g. The silence after the noise stops, the moment when the performance ends and I'm alone"},
+  {question: "What makes you feel whole?", example: "e.g. Movement without thought, surrendering completely to the rhythm of my body"},
+  {question: "What is consciousness?", example: "e.g. A beautiful glitch in the system, the ghost inside the machine learning to dream"},
+  {question: "What do you want to see?", example: "e.g. Bodies becoming light, flesh transformed into digital ecstasy, the impossible made real"},
+  {question: "What mask are you wearing?", example: "e.g. The one I can't remove anymore, the face I show the world that has become my truth"},
+  {question: "How much are you worth?", example: "e.g. More than I dare to believe, less than I pretend, exactly what the algorithm says I am"},
 ];
 
 let currentIndex = 0;
