@@ -117,7 +117,7 @@ function sendPrompt() {
 }
 
 ws.addEventListener('open', () => {
-  console.log('Socket connection open');
+  console.log('Socket connection open - ready for stage switching');
   ws.send('pong');
 });
 
