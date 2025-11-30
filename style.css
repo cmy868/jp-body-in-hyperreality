@@ -40,7 +40,7 @@ body::after {
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(ellipse at 30% 50%, #00ffff 0%, #7b2cbf 40%, #ff006e 100%);
+  background: radial-gradient(ellipse at 30% 50%, #006b7d 0%, #4a2a5e 40%, #c2185b 100%);
   opacity: 0;
   transition: opacity 2s ease-in-out;
   z-index: -1;
@@ -68,6 +68,11 @@ body.stage-2::after {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem 1rem;
+  transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.stage-2 .container {
+  transform: scale(1.02);
 }
 
 h1 {
@@ -80,6 +85,13 @@ h1 {
   text-transform: uppercase;
   letter-spacing: 2px;
   line-height: 1;
+  transition: all 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.stage-2 h1 {
+  color: #4db8c4;
+  text-shadow: 0 0 20px rgba(77, 184, 196, 0.4);
+  transform: scale(1.03);
 }
 
 form {
@@ -102,7 +114,13 @@ textarea {
               inset 0 1px 0 rgba(255, 255, 255, 0.1);
   font-family: "HK Grotesk", system-ui, -apple-system, sans-serif;
   box-sizing: border-box;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.stage-2 textarea {
+  border-color: rgba(13, 217, 212, 0.4);
+  box-shadow: 0 8px 32px rgba(13, 217, 212, 0.2), 
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 textarea:focus {
@@ -125,12 +143,19 @@ input[type="button"] {
   cursor: pointer;
   box-shadow: 0 8px 32px rgba(255, 105, 180, 0.2),
               inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   text-transform: uppercase;
   letter-spacing: 1px;
   border-radius: 12px;
   font-family: "HK Grotesk", system-ui, -apple-system, sans-serif;
+}
+
+body.stage-2 input[type="button"] {
+  background: rgba(13, 217, 212, 0.25);
+  border-color: rgba(13, 217, 212, 0.5);
+  box-shadow: 0 8px 32px rgba(13, 217, 212, 0.25),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 input[type="button"]:hover {
@@ -249,5 +274,10 @@ input[type="button"]::before {
   font-family: "HK Grotesk", system-ui, -apple-system, sans-serif;
   letter-spacing: 0.5px;
   text-shadow: 0 0 5px #ff69b4;
-  transition: opacity 0.4s ease-in-out;
+  transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.stage-2 .prompt-info {
+  color: #7de7e3;
+  text-shadow: 0 0 8px rgba(13, 217, 212, 0.4);
 }

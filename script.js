@@ -139,6 +139,8 @@ function sendPrompt() {
 ws.addEventListener('open', () => {
   console.log('Socket connection open - ready for stage switching');
   ws.send('pong');
+  // Request current stage from server
+  ws.send(JSON.stringify({type: 'request_stage'}));
 });
 
 function parseSwitch1Payload(raw) {
@@ -181,6 +183,14 @@ function handleWSMessageData(data) {
   if (val === 0 || val === 1 || val === 0.0 || val === 1.0) {
     applySwitchState(Number(val));
   } else {
+    // Check if it's a stage response
+    try {
+      const parsed = typeof data === 'string' ? JSON.parse(data) : data;
+      if (parsed && parsed.type === 'current_stage' && parsed.stage !== undefined) {
+        applySwitchState(Number(parsed.stage));
+        return;
+      }
+    } catch (e) {}
     console.log('message (unparsed)', data);
   }
 }
