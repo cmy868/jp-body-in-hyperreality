@@ -40,7 +40,7 @@ body::after {
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(ellipse at 30% 50%, #006b7d 0%, #4a2a5e 40%, #c2185b 100%);
+  background: radial-gradient(ellipse at 30% 50%, #004d5a 0%, #3a1f47 40%, #8b1538 100%);
   opacity: 0;
   transition: opacity 2s ease-in-out;
   z-index: -1;
@@ -89,8 +89,8 @@ h1 {
 }
 
 body.stage-2 h1 {
-  color: #4db8c4;
-  text-shadow: 0 0 20px rgba(77, 184, 196, 0.4);
+  color: #3ca8b8;
+  text-shadow: 0 0 20px rgba(60, 168, 184, 0.35);
   transform: scale(1.03);
 }
 

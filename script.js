@@ -26,6 +26,7 @@ const questionsSwitch1 = [
 let currentIndex = 0;
 let currentSet = questionsSwitch0;
 let currentStage = null; // 1 or 2 when known
+let isInitialLoad = true; // Track if this is the first load
 
 function setTitleAndPlaceholder(textVal) {
   console.log('Setting question to:', textVal);
@@ -64,7 +65,8 @@ function updateStageUI(stage) {
 }
 
 function showNextQuestion() {
-  currentIndex = (currentIndex + 1) % currentSet.length;
+  // Pick a random question from current set
+  currentIndex = Math.floor(Math.random() * currentSet.length);
   setTitleAndPlaceholder(currentSet[currentIndex]);
 }
 
@@ -76,11 +78,23 @@ function applySwitchState(val) {
     currentStage = nextStage;
     console.log(`Stage ${currentStage} - switched (switch1=${n})`);
     currentSet = (currentStage === 2) ? questionsSwitch1 : questionsSwitch0;
-    // Reset to first question when stage changes
-    currentIndex = 0;
+    
+    // Pick random question
+    currentIndex = Math.floor(Math.random() * currentSet.length);
     setTitleAndPlaceholder(currentSet[currentIndex]);
-    setBodyStageClass(currentStage);
+    
+    // Only animate if not initial load
+    if (!isInitialLoad) {
+      setBodyStageClass(currentStage);
+    }
     updateStageUI(currentStage);
+    
+    // Mark initial load complete
+    if (isInitialLoad) {
+      isInitialLoad = false;
+      // Apply stage class without animation delay
+      setTimeout(() => setBodyStageClass(currentStage), 50);
+    }
   } else {
     console.log(`Stage ${currentStage} - repeat (switch1=${n})`);
   }
