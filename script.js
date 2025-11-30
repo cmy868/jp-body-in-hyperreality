@@ -6,21 +6,21 @@ let submitBtn = document.querySelector('input[type="button"]');
 
 // Question sets controlled by TouchDesigner `switch1`
 const questionsSwitch0 = [
-  "What is your fear?",
-  "What are you afraid of?",
-  "What do you hope?",
-  "What do you dream?",
+  {question: "What is your fear?", example: "Being forgotten"},
+  {question: "What are you afraid of?", example: "Losing control"},
+  {question: "What do you hope?", example: "To find connection"},
+  {question: "What do you dream?", example: "A world without boundaries"},
 ];
 
 const questionsSwitch1 = [
-  "What is your most transgressive desire?",
-  "Who do you want to be?",
-  "What are you afraid of?",
-  "What makes you feel whole?",
-  "What is consciousness?",
-  "What do you want to see?",
-  "What mask are you wearing?",
-  "How much are you worth?",
+  {question: "What is your most transgressive desire?", example: "To dissolve into pure data"},
+  {question: "Who do you want to be?", example: "Someone unrecognizable"},
+  {question: "What are you afraid of?", example: "The silence after the noise"},
+  {question: "What makes you feel whole?", example: "Movement without thought"},
+  {question: "What is consciousness?", example: "A glitch in the system"},
+  {question: "What do you want to see?", example: "Bodies becoming light"},
+  {question: "What mask are you wearing?", example: "The one I can't remove"},
+  {question: "How much are you worth?", example: "More than I believe"},
 ];
 
 let currentIndex = 0;
@@ -33,8 +33,14 @@ function setTitleAndPlaceholder(textVal) {
   const titleEl = document.getElementById("title") || document.querySelector("h1#title, .container h1, h1");
   const promptEl = document.getElementById("promptInput");
   if (!titleEl) console.warn('Title element not found. Ensure <h1 id="title"> exists.');
-  if (titleEl) titleEl.textContent = textVal;
-  if (promptEl) promptEl.placeholder = textVal;
+  
+  if (typeof textVal === 'object') {
+    if (titleEl) titleEl.textContent = textVal.question;
+    if (promptEl) promptEl.placeholder = textVal.example;
+  } else {
+    if (titleEl) titleEl.textContent = textVal;
+    if (promptEl) promptEl.placeholder = textVal;
+  }
 }
 
 function setBodyStageClass(stage) {
@@ -42,6 +48,19 @@ function setBodyStageClass(stage) {
   if (!body) return;
   body.classList.remove('stage-1', 'stage-2');
   body.classList.add(stage === 2 ? 'stage-2' : 'stage-1');
+}
+
+function updateStageUI(stage) {
+  const promptInfo = document.querySelector('.prompt-info');
+  const submitButton = document.querySelector('input[type="button"]');
+  
+  if (stage === 1) {
+    if (promptInfo) promptInfo.innerHTML = "Your answer will be part of the digital collective.";
+    if (submitButton) submitButton.value = "Share Your Answer";
+  } else {
+    if (promptInfo) promptInfo.innerHTML = "Each prompt lasts 20 seconds.<br>Please wait for your turn after submitting.";
+    if (submitButton) submitButton.value = "Submit Prompt";
+  }
 }
 
 function showNextQuestion() {
@@ -61,6 +80,7 @@ function applySwitchState(val) {
     currentIndex = 0;
     setTitleAndPlaceholder(currentSet[currentIndex]);
     setBodyStageClass(currentStage);
+    updateStageUI(currentStage);
   } else {
     console.log(`Stage ${currentStage} - repeat (switch1=${n})`);
   }
@@ -188,7 +208,6 @@ ws.addEventListener('close', () => {
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize with switch==0 behavior until TD sends a value
   applySwitchState(0);
-  setBodyStageClass(1);
 });
 
 //Original

@@ -17,10 +17,9 @@
           name="prompt" 
           placeholder="Ted Shawn and his man dancers cavorting in the fields."
         ></textarea>
-        <input type="button" onclick="sendPrompt()" value="Submit Prompt">
-        <div class="prompt-info">
-          Each prompt lasts 20 seconds.<br>
-          Please wait for your turn after submitting.
+        <input type="button" id="submitButton" onclick="sendPrompt()" value="Submit Prompt">
+        <div class="prompt-info" id="stageInstruction">
+          Your answer will be part of the digital archive.
         </div>
         <div id="textField" style="display: none;">
           ❗️The input is empty.
