@@ -16,7 +16,7 @@ body {
   font-family: "HK Grotesk", system-ui, -apple-system, sans-serif;
   min-height: 100vh;
   margin: 0;
-  transition: background 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 1.5s ease-in-out;
 }
 
 /* Stage-specific backgrounds */
@@ -25,7 +25,7 @@ body.stage-1 {
 }
 
 body.stage-2 {
-  background: linear-gradient(135deg, #0a3d2e 0%, #1a5045 50%, #ff69b4 100%);
+  background: linear-gradient(135deg, #1a4d6d 0%, #2d5a5e 30%, #4a3d5a 60%, #ff69b4 100%);
 }
 
 .container {
