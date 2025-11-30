@@ -74,6 +74,10 @@ function applySwitchState(val) {
   // Normalize val to number 0/1
   const n = typeof val === 'string' ? Number(val) : val;
   const nextStage = (n === 1) ? 2 : 1;
+  
+  // First time receiving stage
+  const isFirstLoad = currentStage === null;
+  
   if (currentStage !== nextStage) {
     currentStage = nextStage;
     console.log(`Stage ${currentStage} - switched (switch1=${n})`);
@@ -83,11 +87,16 @@ function applySwitchState(val) {
     currentIndex = Math.floor(Math.random() * currentSet.length);
     setTitleAndPlaceholder(currentSet[currentIndex]);
     
-    // Only animate if not initial load
-    if (!isInitialLoad) {
-      setBodyStageClass(currentStage);
-    }
+    // Set stage class immediately (no flash)
+    setBodyStageClass(currentStage);
     updateStageUI(currentStage);
+    
+    // Fade in on first load
+    if (isFirstLoad) {
+      document.body.style.opacity = '1';
+      const container = document.querySelector('.container');
+      if (container) container.style.visibility = 'visible';
+    }
     
     // Mark initial load complete
     if (isInitialLoad) {
@@ -230,8 +239,23 @@ ws.addEventListener('close', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize with switch==0 behavior until TD sends a value
-  applySwitchState(0);
+  // Hide content until stage is confirmed
+  document.body.style.opacity = '0';
+  
+  // Show loading state - will be replaced by actual stage
+  const container = document.querySelector('.container');
+  if (container) {
+    container.style.visibility = 'hidden';
+  }
+  
+  // Wait for stage sync, or default to stage 0 after timeout
+  setTimeout(() => {
+    if (currentStage === null) {
+      applySwitchState(0);
+      document.body.style.opacity = '1';
+      if (container) container.style.visibility = 'visible';
+    }
+  }, 1000);
 });
 
 //Original

@@ -18,6 +18,7 @@ body {
   margin: 0;
   position: relative;
   overflow: hidden;
+  transition: opacity 0.6s ease-in-out;
 }
 
 body::before {
