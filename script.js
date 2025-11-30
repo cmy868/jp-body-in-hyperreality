@@ -29,10 +29,19 @@ let currentStage = null; // 1 or 2 when known
 
 function setTitleAndPlaceholder(textVal) {
   console.log('Setting question to:', textVal);
-  const titleEl = document.getElementById("title");
+  // Be resilient: use #title if present, else fallback to first h1
+  const titleEl = document.getElementById("title") || document.querySelector("h1#title, .container h1, h1");
   const promptEl = document.getElementById("promptInput");
+  if (!titleEl) console.warn('Title element not found. Ensure <h1 id="title"> exists.');
   if (titleEl) titleEl.textContent = textVal;
   if (promptEl) promptEl.placeholder = textVal;
+}
+
+function setBodyStageClass(stage) {
+  const body = document.body;
+  if (!body) return;
+  body.classList.remove('stage-1', 'stage-2');
+  body.classList.add(stage === 2 ? 'stage-2' : 'stage-1');
 }
 
 function showNextQuestion() {
@@ -51,6 +60,7 @@ function applySwitchState(val) {
     // Reset to first question when stage changes
     currentIndex = 0;
     setTitleAndPlaceholder(currentSet[currentIndex]);
+    setBodyStageClass(currentStage);
   } else {
     console.log(`Stage ${currentStage} - repeat (switch1=${n})`);
   }
@@ -178,6 +188,7 @@ ws.addEventListener('close', () => {
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize with switch==0 behavior until TD sends a value
   applySwitchState(0);
+  setBodyStageClass(1);
 });
 
 //Original

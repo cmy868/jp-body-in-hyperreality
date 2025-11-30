@@ -16,6 +16,16 @@ body {
   font-family: "HK Grotesk", system-ui, -apple-system, sans-serif;
   min-height: 100vh;
   margin: 0;
+  transition: background 400ms ease-in-out;
+}
+
+/* Stage-specific backgrounds */
+body.stage-1 {
+  background: linear-gradient(135deg, #000066 0%, #330033 50%, #330020 100%);
+}
+
+body.stage-2 {
+  background: linear-gradient(135deg, #1c0033 0%, #4a0055 50%, #7a0030 100%);
 }
 
 .container {
