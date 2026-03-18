@@ -221,12 +221,31 @@ function handleWSMessageData(data) {
 ws.addEventListener('message', (message) => {
   if (!message) return;
   const d = message.data;
+  // DEBUG: log every raw message from server
   if (d instanceof Blob) {
-    d.text().then(handleWSMessageData).catch((e) => console.log('blob parse error', e));
+    d.text().then((t) => {
+      console.log('[WS RAW Blob→text]', t);
+      handleWSMessageData(t);
+    }).catch((e) => console.log('blob parse error', e));
   } else {
+    console.log('[WS RAW]', typeof d, d);
     handleWSMessageData(d);
   }
 });
+
+// DEBUG: call testSwitch(1) or testSwitch(0) from browser console
+// This sends a switch1 message through the server to test relay
+window.testSwitch = function(val) {
+  const msg = JSON.stringify({switch1: val});
+  console.log('[TEST] Sending to server:', msg);
+  ws.send(msg);
+};
+
+// DEBUG: bypass server entirely — call localSwitch(1) or localSwitch(0)
+window.localSwitch = function(val) {
+  console.log('[LOCAL TEST] Applying stage switch:', val);
+  applySwitchState(val);
+};
 
 ws.addEventListener('error', (error) => {
   console.error('error disconnect', error);

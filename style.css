@@ -1,14 +1,5 @@
-@font-face {
-  font-family: HK Grotesk;
-  src: url("https://cdn.glitch.me/605e2a51-d45f-4d87-a285-9410ad350515%2FHKGrotesk-Regular.otf?v=1603136326027")
-    format("opentype");
-}
-@font-face {
-  font-family: HK Grotesk;
-  font-weight: bold;
-  src: url("https://cdn.glitch.me/605e2a51-d45f-4d87-a285-9410ad350515%2FHKGrotesk-Bold.otf?v=1603136323437")
-    format("opentype");
-}
+/* HK Grotesk loaded via @import from CORS-friendly CDN */
+@import url('https://fonts.cdnfonts.com/css/hk-grotesk');
 
 body {
   background: linear-gradient(135deg, #000066 0%, #330033 50%, #330020 100%);
